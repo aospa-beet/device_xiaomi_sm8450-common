@@ -152,15 +152,6 @@ PRODUCT_VENDOR_PROPERTIES += \
     vendor.display.enable_hist_intr=1 \
     vendor.display.idle_time=0
 
-# Doze
-PRODUCT_PACKAGES += \
-    ParanoidDoze
-
-PRODUCT_SYSTEM_EXT_PROPERTIES += \
-    ro.sensor.pickup=xiaomi.sensor.pickup \
-    ro.sensor.pickup.lower.value=2 \
-    ro.sensor.proximity=true
-
 # DPM
 PRODUCT_VENDOR_PROPERTIES += \
     persist.vendor.dpm.vndr.feature=1 \
@@ -371,7 +362,6 @@ PRODUCT_VENDOR_PROPERTIES += \
 
 # Sensors
 PRODUCT_PACKAGES += \
-    android.hardware.sensors@2.1-service.multihal \
     libsensorndkbridge
 
 PRODUCT_COPY_FILES += \
