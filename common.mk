@@ -129,28 +129,14 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_ODM_PROPERTIES += \
     persist.sys.sf.color_mode=0 \
-    ro.surface_flinger.enable_frame_rate_override=false \
-    ro.surface_flinger.set_idle_timer_ms=500 \
-    ro.surface_flinger.set_touch_timer_ms=1000 \
-    vendor.display.disable_3d_adaptive_tm=0 \
-    vendor.display.enable_rounded_corner=0
+    ro.surface_flinger.set_idle_timer_ms?=500 \
+    ro.surface_flinger.set_touch_timer_ms?=1000
 
 PRODUCT_VENDOR_PROPERTIES += \
-    debug.sf.defer_refresh_rate_when_off=1 \
     debug.sf.disable_backpressure=1 \
     debug.sf.frame_rate_multiple_threshold=120 \
     persist.sys.sf.native_mode=258 \
-    ro.gfx.driver.1=com.qualcomm.qti.gpudrivers.taro.api32 \
-    ro.vendor.display.ai_disp.enable=true \
-    ro.vendor.display.hwc_thermal_dimming=true \
-    ro.vendor.display.mi_calib.enable=true \
-    ro.vendor.display.nature_mode.enable=true \
-    ro.vendor.histogram.enable=true \
-    ro.vendor.sre.enable=true \
-    ro.vendor.xiaomi.bl.poll=true \
-    vendor.display.enable_fp_monitor=1 \
-    vendor.display.enable_hist_intr=1 \
-    vendor.display.idle_time=0
+    ro.gfx.driver.1=com.qualcomm.qti.gpudrivers.taro.api32
 
 # DPM
 PRODUCT_VENDOR_PROPERTIES += \

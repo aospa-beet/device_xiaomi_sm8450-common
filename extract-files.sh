@@ -66,13 +66,8 @@ function blob_fixup() {
         vendor/bin/hw/dolbycodec2 | vendor/bin/hw/vendor.dolby.hardware.dms@2.0-service | vendor/bin/hw/vendor.dolby.media.c2@1.0-service)
             "${PATCHELF}" --add-needed "libstagefright_foundation-v33.so" "${2}"
             ;;
-        vendor/lib64/hw/displayfeature.default.so | vendor/lib64/hw/audio.primary.taro.so)
+        vendor/lib64/hw/audio.primary.taro.so)
             "${PATCHELF}" --replace-needed "libstagefright_foundation.so" "libstagefright_foundation-v33.so" "${2}"
-            ;;
-        vendor/bin/hw/vendor.qti.hardware.display.composer-service)
-            "${PATCHELF}" --remove-needed "libutils.so" "${2}"
-            "${PATCHELF}" --add-needed "libutils-v32.so" "${2}"
-            "${PATCHELF}" --add-needed "libutils-shim.so" "${2}"
             ;;
         vendor/bin/hw/vendor.qti.secure_element@1.2-service)
             "${PATCHELF}" --replace-needed "jcos_nq_client-v1.so" "jcos_nq_client.so" "${2}"
