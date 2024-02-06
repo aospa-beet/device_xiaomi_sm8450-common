@@ -81,13 +81,26 @@ void set_device_props(const string brand, const string device,
 void vendor_load_properties() {
     // Detect variant and override properties
     string region = GetProperty("ro.boot.hwc", "");
+    string product = GetProperty("ro.build.product", "");
 
-    if (region == "CN") { // China
-        set_device_props("Redmi", "marble", "23049RAD8C", "marble", "Redmi Note 12 Turbo");
-    } else if (region == "IN") { // India
-        set_device_props("POCO", "marblein", "23049PCD8I", "marblein", "POCO F5");
-    } else { // Global
-        set_device_props("POCO", "marble", "23049PCD8G", "marble_global", "POCO F5");
+    if (product == "marble") {
+        if (region == "CN") { // China
+            set_device_props("Redmi", "marble", "23049RAD8C", "marble", "Redmi Note 12 Turbo");
+        }
+        else if (region == "IN") { // India
+            set_device_props("POCO", "marblein", "23049PCD8I", "marblein", "POCO F5");
+        }
+        else { // Global
+            set_device_props("POCO", "marble", "23049PCD8G", "marble_global", "POCO F5");
+        }
+    }
+    else if (product == "diting") {
+        if (region == "CN") { // China
+            set_device_props("Redmi", "diting", "22081212C", "diting", "Redmi K50 Ultra");
+        }
+        else { // Global
+            set_device_props("Xiaomi", "diting", "22081212UG", "ditingp_global", "Xiaomi 12T Pro");
+        }
     }
 
     // Set hardware revision
