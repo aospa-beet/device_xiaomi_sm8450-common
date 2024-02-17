@@ -61,8 +61,8 @@ ________________________________________________________________________________
                 <Prop Name="ro.vendor.perf.splh" Value="none" Target="diwali"/>
                 <Prop Name="ro.vendor.perf.lplh" Value="false" Target="cape,taro,ukee"/>
                 <Prop Name="ro.vendor.perf.lplh" Value="false" Target="diwali"/>
-                <Prop Name="ro.vendor.perf.lal" Value="false" Target="diwali"/>
-                <Prop Name="ro.vendor.perf.lgl" Value="false" Target="diwali" SkewType="10"/>
+                <Prop Name="ro.vendor.perf.lal" Value="true" />
+                <Prop Name="ro.vendor.perf.lgl" Value="true" SkewType="10"/>
                 <Prop Name="vendor.perf.enable_gplaf_hw" Value="false" Target="diwali" />
                 <Prop Name="ro.vendor.perf.dplh" Value="false" Target="diwali" />
 
