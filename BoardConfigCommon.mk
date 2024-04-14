@@ -30,7 +30,7 @@ AB_OTA_PARTITIONS += \
     vendor_dlkm
 
 # Bootloader
-TARGET_BOOTLOADER_BOARD_NAME := taro
+TARGET_BOOTLOADER_BOARD_NAME ?= taro
 
 # Build
 BUILD_BROKEN_DUP_RULES := true
@@ -40,13 +40,16 @@ BUILD_BROKEN_VENDOR_PROPERTY_NAMESPACE := true
 # HIDL
 DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE += $(COMMON_PATH)/configs/hidl/device_framework_compatibility_matrix.xml
 DEVICE_MANIFEST_FILE += $(COMMON_PATH)/configs/hidl/manifest.xml
+ifeq ($(TARGET_NFC_SKU),)
+DEVICE_MANIFEST_FILE += $(COMMON_PATH)/configs/hidl/manifest_nfc.xml
+else
+ODM_MANIFEST_SKUS += $(TARGET_NFC_SKU)
+$(foreach sku, $(call to-upper, $(TARGET_NFC_SKU)), \
+    $(eval ODM_MANIFEST_$(sku)_FILES := $(COMMON_PATH)/configs/hidl/manifest_nfc.xml))
+endif
 
 # Health
 TARGET_HEALTH_CHARGING_CONTROL_SUPPORTS_BYPASS := false
-
-# Init
-TARGET_INIT_VENDOR_LIB := //$(COMMON_PATH):libinit_xiaomi_sm8450
-TARGET_RECOVERY_DEVICE_MODULES := libinit_xiaomi_sm8450
 
 # Kernel
 BOARD_KERNEL_PAGESIZE := 4096

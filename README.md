@@ -1,6 +1,12 @@
-# Common tree for Xiaomi SM8450 devices
+# Common device configuration for Xiaomi Taro family
 
-Currently supports the following devices:-
+## Currently supported SoCs
+
+- SM8450 (taro)
+- SM8475 (cape)
+- SM7475 (ukee)
+
+## Currently supported devices:
 
 - Xiaomi 12 (cupid)
 - Redmi K50 Ultra / Xiaomi 12T Pro (diting)

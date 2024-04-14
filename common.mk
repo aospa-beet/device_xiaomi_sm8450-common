@@ -123,6 +123,7 @@ $(call inherit-product, frameworks/native/build/phone-xhdpi-6144-dalvik-heap.mk)
 
 # Device Settings
 PRODUCT_PACKAGES += \
+    KeyHandler \
     XiaomiParts
 
 # Display / Graphics
@@ -133,14 +134,32 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_ODM_PROPERTIES += \
     persist.sys.sf.color_mode=0 \
-    ro.surface_flinger.set_idle_timer_ms?=500 \
-    ro.surface_flinger.set_touch_timer_ms?=1000
+    ro.surface_flinger.set_idle_timer_ms?=1100 \
+    ro.surface_flinger.set_touch_timer_ms?=200 \
+    vendor.display.disable_3d_adaptive_tm=0 \
+    vendor.display.enable_rounded_corner=0
 
 PRODUCT_VENDOR_PROPERTIES += \
     debug.sf.disable_backpressure=1 \
     debug.sf.frame_rate_multiple_threshold=120 \
     persist.sys.sf.native_mode=258 \
-    ro.gfx.driver.1=com.qualcomm.qti.gpudrivers.taro.api32
+    ro.gfx.driver.1=com.qualcomm.qti.gpudrivers.taro.api32 \
+    ro.vendor.display.ai_disp.enable=true \
+    ro.vendor.display.hwc_thermal_dimming=true \
+    ro.vendor.display.mi_calib.enable=true \
+    ro.vendor.display.nature_mode.enable=true \
+    ro.vendor.histogram.enable=true \
+    ro.vendor.sre.enable=true \
+    ro.vendor.xiaomi.bl.poll=true
+
+# Doze
+PRODUCT_PACKAGES += \
+    ParanoidDoze
+
+PRODUCT_SYSTEM_EXT_PROPERTIES += \
+    ro.sensor.pickup=xiaomi.sensor.pickup \
+    ro.sensor.pickup.lower.value=2 \
+    ro.sensor.proximity?=true
 
 # DPM
 PRODUCT_VENDOR_PROPERTIES += \
@@ -162,9 +181,6 @@ PRODUCT_PACKAGES += \
     fastbootd
 
 # Fingerprint
-PRODUCT_PACKAGES += \
-    android.hardware.biometrics.fingerprint@2.1.vendor
-
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.fingerprint.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.fingerprint.xml
 
@@ -202,11 +218,12 @@ PRODUCT_VENDOR_PROPERTIES += \
 # Init scripts
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/rootdir/bin/init.kernel.post_boot.sh:$(TARGET_COPY_OUT_VENDOR)/bin/init.kernel.post_boot.sh \
-    $(LOCAL_PATH)/rootdir/bin/init.xiaomi.perf.sh:$(TARGET_COPY_OUT_VENDOR)/bin/init.xiaomi.perf.sh \
-    $(LOCAL_PATH)/rootdir/etc/init.xiaomi.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/init.xiaomi.rc \
-    $(LOCAL_PATH)/rootdir/etc/init.xiaomi.perf.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/init.xiaomi.perf.rc \
+    $(LOCAL_PATH)/rootdir/bin/init.xiaomi_taro.perf.sh:$(TARGET_COPY_OUT_VENDOR)/bin/init.xiaomi_taro.perf.sh \
+    $(LOCAL_PATH)/rootdir/bin/init.xiaomi_taro.sh:$(TARGET_COPY_OUT_VENDOR)/bin/init.xiaomi_taro.sh \
     $(LOCAL_PATH)/rootdir/etc/init.target.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/init.target.rc \
-    $(LOCAL_PATH)/rootdir/etc/ueventd.xiaomi.rc:$(TARGET_COPY_OUT_ODM)/etc/ueventd.rc
+    $(LOCAL_PATH)/rootdir/etc/init.xiaomi_taro.perf.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/init.xiaomi_taro.perf.rc \
+    $(LOCAL_PATH)/rootdir/etc/init.xiaomi_taro.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/init.xiaomi_taro.rc \
+    $(LOCAL_PATH)/rootdir/etc/ueventd.rc:$(TARGET_COPY_OUT_ODM)/etc/ueventd.rc
 
 # IR
 PRODUCT_PACKAGES += \
@@ -236,11 +253,8 @@ PRODUCT_VENDOR_PROPERTIES += \
 # Keylayout
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/keylayout/gpio-keys.kl:$(TARGET_COPY_OUT_VENDOR)/usr/keylayout/gpio-keys.kl \
-    $(LOCAL_PATH)/configs/keylayout/uinput-fpc.kl:$(TARGET_COPY_OUT_VENDOR)/usr/keylayout/uinput-fpc.kl \
-    $(LOCAL_PATH)/configs/keylayout/uinput-goodix.kl:$(TARGET_COPY_OUT_VENDOR)/usr/keylayout/uinput-goodix.kl \
     $(LOCAL_PATH)/configs/keylayout/Button_Jack.kl:$(TARGET_COPY_OUT_VENDOR)/usr/keylayout/ukee-mtp-snd-card_Button_Jack.kl \
-    $(LOCAL_PATH)/configs/keylayout/Button_Jack.kl:$(TARGET_COPY_OUT_VENDOR)/usr/keylayout/waipio-mtp-snd-card_Button_Jack.kl \
-    $(LOCAL_PATH)/configs/keylayout/Button_Jack.kl:$(TARGET_COPY_OUT_VENDOR)/usr/keylayout/waipio-mtp-snd-card_Headset_Jack.kl \
+    $(LOCAL_PATH)/configs/keylayout/Button_Jack.kl:$(TARGET_COPY_OUT_VENDOR)/usr/keylayout/waipio-mtp-snd-card_Button_Jack.kl
 
 # Logging
 SPAMMY_LOG_TAGS := \
@@ -285,7 +299,6 @@ PRODUCT_PACKAGES += \
 # NDK
 NEED_AIDL_NDK_PLATFORM_BACKEND := true
 
-
 # Namespaces
 PRODUCT_SOONG_NAMESPACES += \
     $(LOCAL_PATH) \
@@ -293,15 +306,16 @@ PRODUCT_SOONG_NAMESPACES += \
 
 # Overlays
 PRODUCT_PACKAGES += \
-    AOSPASM8450FrameworksOverlay \
-    AOSPASM8450SettingsOverlay \
-    AOSPASM8450SystemUIOverlay \
-    XiaomiSM8450CarrierConfigOverlay \
-    XiaomiSM8450FrameworksOverlay \
-    XiaomiSM8450SettingsOverlay \
-    XiaomiSM8450SystemUIOverlay \
-    XiaomiSM8450WifiOverlay \
-    XiaomiSM8450WifiMainlineOverlay
+    AOSPAXiaomiTaroFrameworksOverlay \
+    AOSPAXiaomiTaroSettingsOverlay \
+    AOSPAXiaomiTaroSystemUIOverlay \
+    DcDimmingFrameworksOverlay \
+    XiaomiTaroCarrierConfigOverlay \
+    XiaomiTaroFrameworksOverlay \
+    XiaomiTaroSettingsOverlay \
+    XiaomiTaroSystemUIOverlay \
+    XiaomiTaroWifiOverlay \
+    XiaomiTaroWifiMainlineOverlay
 
 # Partitions
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
@@ -315,6 +329,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/perf/commonresourceconfigs.xml:$(TARGET_COPY_OUT_VENDOR)/etc/perf/commonresourceconfigs.xml \
     $(LOCAL_PATH)/configs/perf/perfboostsconfig.xml:$(TARGET_COPY_OUT_VENDOR)/etc/perf/perfboostsconfig.xml \
     $(LOCAL_PATH)/configs/perf/perfconfigstore.xml:$(TARGET_COPY_OUT_VENDOR)/etc/perf/perfconfigstore.xml \
+    $(LOCAL_PATH)/configs/perf/powerhint.xml:$(TARGET_COPY_OUT_VENDOR)/etc/powerhint.xml \
     $(LOCAL_PATH)/configs/perf/targetresourceconfigs.xml:$(TARGET_COPY_OUT_VENDOR)/etc/perf/targetresourceconfigs.xml
 
 PRODUCT_ODM_PROPERTIES += \
@@ -351,10 +366,12 @@ PRODUCT_VENDOR_PROPERTIES += \
     persist.vendor.data.iwlan.enable=true \
     persist.vendor.radio.add_power_save=1 \
     persist.vendor.radio.dynamic_sar=1 \
+    persist.vendor.radio.redir_party_num=0 \
     ro.vendor.radio.build_profile=u-stable
 
 # Sensors
 PRODUCT_PACKAGES += \
+    android.hardware.sensors@2.1-service.multihal \
     libsensorndkbridge
 
 PRODUCT_COPY_FILES += \
